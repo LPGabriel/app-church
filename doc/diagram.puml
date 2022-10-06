@@ -1,0 +1,9 @@
+@startuml Church
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(personAlias, "Membros", "Membros da congregação")
+Container(containerAlias, "PWA", "NextJs, Javascript, PrismaJS, MYSQL", "Permite que os membros tenham acesso a devocionais")
+System(systemAlias, "Label", "Optional Description")
+
+Rel(personAlias, containerAlias, "Usuário", "Optional Technology")
+@enduml
