@@ -1,15 +1,27 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { useSession, signIn, signOut } from "next-auth/react"
 
-export default function(){
-  return(
-    <Home/>
 
-  );
+function Index(){
+  const {data: session} = useSession()
+
+  if(session) {
+    return <>
+      Signed in as {session.user.email} <br/>
+      <button onClick={() => signOut()}>Sair</button>
+      <Banner/>
+    </>
+  }
+  return <>
+    Não Logado <br/>
+    <button onClick={() => signIn()}>Login</button>
+  </>
 }
 
-export function Home() {
+
+function Banner() {
   return (
     <div className={styles.container}>
       <Head>
@@ -74,3 +86,6 @@ export function Home() {
     </div>
   )
 }
+
+
+export default Index;
