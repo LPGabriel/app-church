@@ -1,6 +1,8 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import { PrismaClient } from '@prisma/client'
+import { getToken } from "next-auth/jwt";
+import { Session } from "inspector";
 let userAccount = null;
 
 const prisma = new PrismaClient();
@@ -57,6 +59,32 @@ export default NextAuth({
       },
     }),
   ],
+callbacks: {
+  jwt: async (token, user, account, profile, isNewUser)=> {
+   // parâmetro "user" é o objeto recebido de "authorize"
+    // "token" está sendo enviado abaixo para callback "session"...
+    // ... então definimos o parâmetro "user" de "token" para object de "authorize" ...
+    // ... e devolvê-lo ...
+      console.log('jwp callback', user)
+      user && (token.user = user);
+      return token // ... aqui
+  }, 
+  async session (session, sessionToken) {
+    console.log('jwp callback', user)
+    session.user = user.user;
+    return session
+}
 
+},
+pages:{
+  signIn: 'pagina de login',
+  error: 'pagina de erro'
+},
+session: {
+  jwt: true
+},
+jwt: {
+  secret: process.env.JWT_SECRET
+}
 
-});
+})
