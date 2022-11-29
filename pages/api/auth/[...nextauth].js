@@ -20,12 +20,18 @@ export default NextAuth({
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" }
         })
+        
+        const retorno = await res.json()
+        if (retorno.message){
+          console.log(retorno.message)
 
-        const user = await res.json()
+        }
+        
+        
 
         // If no error and we have user data, return it
-        if (res.ok && user) {
-          console.log("Login ok")
+        if (res.ok && !retorno.message) {
+          const user = retorno
           return user
         }
         // Return null if user data could not be retrieved
@@ -33,7 +39,7 @@ export default NextAuth({
       }
     }),
   ],
-  debug: true,
+  debug: false,
   session: {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60
