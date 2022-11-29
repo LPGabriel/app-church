@@ -19,7 +19,7 @@ export default async function handle(req, res) {
         if (user) {
             const checkPassword = await bcrypt.compare(password, user.password)
             
-            console.log(checkPassword)
+            console.log("Senha correeta "+ checkPassword)
 
             if (checkPassword === true){
                 res.json(user);
